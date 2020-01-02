@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<hibernate-mapping>  
+    <class name="xiaobin.gao.ap.model.User" table="user">  
+        <!--<id name= column= type=>-->
+        <id name="id" column="user_id" type="integer">  
+            <generator class="increment"></generator>  
+        </id>  
+        <!--Basic value mapping-->
+        <property name="name" column="name" type="string"></property>  
+        <property name="email" column="email" type="string"></property>  
+        <property name="password" column="password" type="string"></property> 
+        <property name="gender" column="gender" type="string"></property> 
+        <property name="profileImg" column="profileImg" type="string"></property> 
+        <property name="prime" column="prime" type="boolean"></property>  
+        
+        <list name="playlist" table="user_playlist">
+            <key column="user_id"/>
+            <list-index column="song_position"/> 
+            <many-to-many column="song_id" class="xiaobin.gao.ap.model.Song"/>  
+        </list>
+        <list name="friends" table="user_friends">
+            <key column="user_id"/>
+            <list-index column="friend_position"/> 
+            <many-to-many column="friend_id" class="xiaobin.gao.ap.model.User"/>  
+        </list>
+        <list name="messages" table="user_messages">
+            <key column="user_id"/>
+            <list-index column="message_position"/> 
+            <many-to-many column="message_id" class="xiaobin.gao.ap.model.Message"/>  
+        </list>
+    </class>  
+    
+    <class name="xiaobin.gao.ap.model.Song" table="song">
+        <id name="id" column="song_id" type="string">  
+            <generator class="assigned"></generator>  
+        </id> 
+        <property name="name" column="name" type="string"></property>  
+        <property name="imgUrl" column="imgUrl" type="string"></property>  
+        <property name="uri" column="uri" type="string"></property> 
+        <property name="previewUrl" column="previewUrl" type="string"></property> 
+        <property name="durationMin" column="durationMin" type="integer"></property>
+        <property name="durationSec" column="durationSec" type="integer"></property> 
+        <property name="albumName" column="albumName" type="string"></property>
+        <list name="artists" table="song_artist">
+            <key column="song_id"/>
+            <list-index column="artist_position"/>
+            <element type="string" column="artist_name" not-null="true"/>    
+        </list>
+    </class>   
+    
+    <class name="xiaobin.gao.ap.model.Message" table="message">
+        <id name="id" column="message_id" type="integer">  
+            <generator class="increment"></generator>  
+        </id> 
+        <property name="fromUserId" column="fromUserId" type="integer"></property>
+        <property name="mType" column="mType" type="string"></property> 
+        <property name="songContent" column="songContent" type="string"/> 
+    </class>      
+    
+</hibernate-mapping> 

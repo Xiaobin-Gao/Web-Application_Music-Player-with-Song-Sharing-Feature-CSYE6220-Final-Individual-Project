@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"   
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+          http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+">
+
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+<!--    <context:component-scan base-package="xiaobin.gao.ap.controller"></context:component-scan> 
+<mvc:annotation-driven/>
+<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>-->
+
+    <bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/home.htm">homeController</prop>
+                <prop key="/login.htm">loginController</prop>
+                <prop key="/signup*/**">signupController</prop> 
+                <prop key="/premium*/**">premiumController</prop> 
+                <prop key="/myDashboard.htm">dashboardController</prop>
+                <prop key="/myDashboard/delete.htm">dashboardController</prop>
+                <prop key="/myDashboard/play.htm">dashboardController</prop>
+                <prop key="/myDashboard/search*/**">searchSongController</prop>
+                <prop key="/myDashboard/add.htm">addSongController</prop>
+                <prop key="/myDashboard/addFriend*/**">addFriendController</prop>
+                <prop key="/myDashboard/signout.htm">signoutController</prop>
+                <prop key="/myDashboard/friendRequest/**">friendRequestController</prop>
+                <prop key="/myDashboard/share*/**">shareSongController</prop>
+                <prop key="/myDashboard/message*/**">messageController</prop>
+                <prop key="/myDashboard/changeImage*/**">changeImageController</prop>
+            </props>
+        </property>
+    </bean>
+    <bean name="homeController" class="xiaobin.gao.ap.controller.HomeController"/>
+    <bean name="loginController" class="xiaobin.gao.ap.controller.LoginController"/>
+    <bean name="signupController" class="xiaobin.gao.ap.controller.SignupController"/>
+    <bean name="premiumController" class="xiaobin.gao.ap.controller.PremiumController"/>
+    <bean name="dashboardController" class="xiaobin.gao.ap.controller.DashboardController"/>
+    <bean name="searchSongController" class="xiaobin.gao.ap.controller.SearchSongController"/>
+    <bean name="addSongController" class="xiaobin.gao.ap.controller.AddSongController"/>
+    <bean name="addFriendController" class="xiaobin.gao.ap.controller.AddFriendController"/>
+    <bean name="signoutController" class="xiaobin.gao.ap.controller.SignoutController"/>
+    <bean name="friendRequestController" class="xiaobin.gao.ap.controller.FriendRequestController"/>
+    <bean name="shareSongController" class="xiaobin.gao.ap.controller.ShareSongController"/>
+    <bean name="messageController" class="xiaobin.gao.ap.controller.MessageController"/>
+    <bean name="changeImageController" class="xiaobin.gao.ap.controller.ChangeImageController"/>
+    
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix">
+            <value>/WEB-INF/jsp/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+    
+    <!--     Configures Interceptors 
+    -->    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/signup/submit.htm"></mvc:mapping>
+            <bean class="xiaobin.gao.ap.interceptor.SignupInterceptor">
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/myDashboard.htm"></mvc:mapping>
+            <bean class="xiaobin.gao.ap.interceptor.LoginInterceptor">
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/myDashboard/delete.htm"></mvc:mapping>
+            <bean class="xiaobin.gao.ap.interceptor.DeleteSongInterceptor">
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/myDashboard/play.htm"></mvc:mapping>
+            <bean class="xiaobin.gao.ap.interceptor.PlaySongInterceptor">
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/myDashboard/message/**"></mvc:mapping>
+            <bean class="xiaobin.gao.ap.interceptor.MessageInterceptor">
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--        <property name="maxUploadSize" value="268435456" />  256 megs -->
+    </bean>
+    
+<!--    <bean name="homeController"
+                  class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+                  p:viewName="home" />-->
+</beans>
